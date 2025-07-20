@@ -1,0 +1,91 @@
+{% extends "std_app/base.html" %}
+
+{% block title %}
+    Home | Customer Management
+{% endblock title %}
+
+{% block content %}
+
+  <!-- Background image -->
+           
+
+ <div class="container mt-4">
+        <h1 class="text-center text-primary mb-4">Welcome to Grahak Seva Kendra</h1>
+
+         <div class="bg-image"
+              style="
+                background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/002.webp');
+                
+                background-repeat: no-repeat;
+                background-size: auto;
+                  background-size:100% 100%;
+                  position: fixed;
+                  width: 100%;
+                  height: 100%;
+                  top: 0;
+                  left: 0;
+                  z-index: -10;
+             ">
+            
+            <!-- Background image --></div>
+
+
+        <!-- Add New Customer Button -->
+        <div class="text-end mb-3">
+            <a href="{% url 'addstd' %}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Add New Customer
+            </a>
+        </div>
+
+        <h3 class="text-center text-dark">Customer's List</h3>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th><center>#</center></th>
+                        <th><center>Name</center></th>
+                        <th><center>Mobile Number</center></th>
+                        <th><center>Aadhaar Number</center></th>
+                        <th><center>Address</center></th>
+                        <th><center>Work Purpose</center></th>
+                        <th><center>Date</center></th>
+                        <th><center>Actions</center></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td><center>{{ forloop.counter }}</center></td>  <!-- Use loop counter instead of ID -->
+                            <td><center>{{ user.name }}</center></td>
+                            <td><center>{{ user.phone }}</center></td>
+                            <td><center>{{ user.aadhaar }}</center></td>
+                            <td><center>{{ user.address }}</center></td>
+                            <td><center>{{ user.purpose }}</center></td>
+                            <td><center>{{ user.date}}</center></td>
+                            <td>
+                                <center>
+                                <!-- Edit Button -->
+                                <a href="{% url 'edit' user.id %}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>  Edit
+                                </a>
+
+                                <!-- Delete Button (Form to handle deletion securely) -->
+                                <form action="{% url 'delete' user.id %}" method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?');">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form></center>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center text-danger">No Record found.</td>
+                        </tr>   
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}
